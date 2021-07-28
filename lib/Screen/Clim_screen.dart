@@ -1,0 +1,243 @@
+import 'dart:io';
+
+import 'package:findus/Model/authentication_service.dart';
+import 'package:findus/Screen/Desktop.dart';
+import 'package:findus/Screen/FindItemList.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+class clim_screen extends StatefulWidget {
+  String id;
+  clim_screen({required this.id});
+
+  @override
+  _clim_screenState createState() => _clim_screenState();
+}
+
+class _clim_screenState extends State<clim_screen> {
+  File? _image;
+  FirebaseStorage _storage = FirebaseStorage.instance;
+
+
+
+  TextEditingController locationController = TextEditingController();
+
+  _imgFromCamera() async {
+    File image ;
+    var abc= await ImagePicker.platform.pickImage(
+        source: ImageSource.camera, imageQuality: 50
+    );
+    image = File(abc!.path);
+
+
+    setState(() {
+      _image = image;
+    });
+  }
+
+  _imgFromGallery() async {
+    File image ;
+    var abc= await ImagePicker.platform.pickImage(
+        source: ImageSource.gallery, imageQuality: 50
+    );
+    image = File(abc!.path);
+
+
+    setState(() {
+      _image = image;
+    });
+  }
+  Future<String> uploadFile( ) async {
+    try {
+      DateTime date = DateTime.now();
+      Reference storageReference = FirebaseStorage.instance
+          .ref()
+          .child('client/${date.toString()}.jpg');
+      // String returnURL = "error";
+      print("Here");
+      UploadTask uploadTask = storageReference.putFile(_image!);
+      print("Here1");
+
+      await uploadTask.whenComplete(() {});
+      print("Here2");
+
+      return await storageReference.getDownloadURL();
+    } catch (error) {
+      return "error";
+    }
+  }
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('Photo Library'),
+                      onTap: () {
+                        _imgFromGallery();
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('Camera'),
+                    onTap: () {
+                      _imgFromCamera();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+    );
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Sighted Location'),
+      ),
+      body: Column(
+        children: <Widget>[
+          SizedBox(
+            height: 32,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                _showPicker(context);
+              },
+              child: CircleAvatar(
+                radius: 55,
+                child: _image != null
+                    ? ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: Image.file(
+                    _image!,
+                    width: 200,
+                    height: 200,
+                    fit: BoxFit.fitHeight,
+                  ),
+                )
+                    : Container(
+                  decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(50)),
+                  width: 100,
+                  height: 100,
+                  child: Icon(
+                    Icons.camera_alt,
+                    color: Colors.grey[800],
+                  ),
+                ),
+              ),
+
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(10),
+            child: TextField(
+              controller: locationController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Please Enter Sighted Location',
+              ),
+            ),
+          ),
+          Container(
+              height: 50,
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+              child: ElevatedButton(
+
+                child: Text('Upload Sighted Location'),
+                onPressed: () async {
+                  showAler(context);
+
+                  if (locationController.text.isEmpty) {
+                    AuthenticationService(FirebaseAuth.instance)
+                        .showAlertDialog(context, "Please Enter Sighted Location");
+                  } else {
+
+                    String image_url = await uploadFile() ;
+                    if(image_url == "error"){
+                      Navigator.pop(context);
+
+                    }else{
+                    String re = await AuthenticationService(FirebaseAuth.instance).Updatedloaction(widget.id,locationController.text,image_url);
+                   print(re);
+                    Navigator.pop(context);
+                    showAlertDialog(context,"Data Upload Successful ");
+
+                    }
+
+
+
+                  }
+                },
+              )),
+        ],
+      ),
+    );
+  }
+  showAlertDialog(BuildContext context, String mess) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+        Navigator.pushReplacement( context,MaterialPageRoute(builder: (context) =>
+            Home_screen()),);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Alert"),
+      content: Text(mess),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAler(BuildContext context) {
+    // set up the button
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Please Wait"),
+      content: Container(
+        child: Center(
+            child: CircularProgressIndicator(strokeWidth: 2,)),
+        width: 100,
+        height: 100,
+      )
+
+
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+}

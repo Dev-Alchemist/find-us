@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "292917984746",
+    "project_id": "findus-dd463",
+    "storage_bucket": "findus-dd463.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:292917984746:android:7550c6ace1779975fa0693",
+        "android_client_info": {
+          "package_name": "com.desidream.findus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "292917984746-paof7hqhjsuudjnavv716qgluo97f7ph.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADK6TCuSEwAtpHX3mCEZG87yB3r5kXjBk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "292917984746-paof7hqhjsuudjnavv716qgluo97f7ph.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
