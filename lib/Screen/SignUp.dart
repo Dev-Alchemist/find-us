@@ -30,16 +30,6 @@ class _Singup_screenState extends State<Singup_screen> {
             padding: EdgeInsets.all(10),
             child: ListView(
               children: <Widget>[
-                // Container(
-                //     alignment: Alignment.center,
-                //     padding: EdgeInsets.all(10),
-                //     child: Text(
-                //       'Find Us',
-                //       style: TextStyle(
-                //           color: MyColors.primaryColorLight,
-                //           fontWeight: FontWeight.w500,
-                //           fontSize: 30),
-                //     )),
                 Container(
                   alignment: Alignment.center,
                   padding: EdgeInsets.all(10),
@@ -110,11 +100,11 @@ class _Singup_screenState extends State<Singup_screen> {
 
                         }else
                         if(emialController.text.isEmpty){
-                          AuthenticationService(FirebaseAuth.instance).showAlertDialog(context,"Please Enter a Valid Email");
-                        }else if (passwordController.text.isEmpty){
-                          AuthenticationService(FirebaseAuth.instance).showAlertDialog(context,"Please Enter Password");
-                        }else if (phoneController.text.isEmpty){
-                          AuthenticationService(FirebaseAuth.instance).showAlertDialog(context,"Please Enter Phone Number");
+                          AuthenticationService(FirebaseAuth.instance).showAlertDialog(context,"Please enter a valid email address");
+                        }else if (passwordController.text.isEmpty && passwordController.text.length < 8){
+                          AuthenticationService(FirebaseAuth.instance).showAlertDialog(context,"Please enter a valid password");
+                        }else if (phoneController.text.isEmpty && phoneController.text.length > 10){
+                          AuthenticationService(FirebaseAuth.instance).showAlertDialog(context,"Please enter valid phone number");
                         }else  {
                           AuthenticationService(FirebaseAuth.instance).signUp(
                             ctx: context,

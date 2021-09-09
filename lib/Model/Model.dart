@@ -29,8 +29,9 @@ class Item {
       location,
       age,
 
-      finditemlocation,
+      findChildLocation,
       UserFindUsId;
+      double? latitude,longitude;
       bool? find;
       List<dynamic>? image;
 
@@ -42,8 +43,9 @@ class Item {
       this.description,
       this.location,
       this.age,
-        this.finditemlocation,
+        this.findChildLocation,
       this.UserFindUsId,
+      this.latitude,this.longitude,
       this.find});
   factory Item.fromJson(Map<String, dynamic> json) {
     return Item(
@@ -54,9 +56,11 @@ class Item {
       description: json['description'],
       location: json['location'],
       age: json['age'],
-      finditemlocation: json['finditemlocation'],
+      findChildLocation: json['findChildLocation'],
       UserFindUsId: json['UserFindUsId'],
       find: json['find'],
+      // longitude: double.parse(json['longitude'].toString()),
+      // latitude:double.parse(json['latitude'].toString()), 
     );
   }
 
@@ -69,9 +73,12 @@ class Item {
       "description": description,
       "location": location,
       "age": age,
-      "finditemlocation" : finditemlocation,
+      "findChildLocation" : findChildLocation,
       "UserFindUsId": UserFindUsId,
-      "find": find
+      "find": find,
+      // 'latitude':latitude,
+      // 'longitude':longitude
+
     };
   }
 }

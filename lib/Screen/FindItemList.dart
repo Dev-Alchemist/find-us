@@ -4,6 +4,7 @@ import 'package:findus/Screen/ViewItem.dart';
 import 'package:flutter/material.dart';
 
 import '../Theme.dart';
+
 class FinditemList extends StatefulWidget {
   const FinditemList({Key? key}) : super(key: key);
 
@@ -15,150 +16,158 @@ class _FinditemListState extends State<FinditemList> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('Items').where(
-          "find", isEqualTo: true).snapshots(),
+      stream: FirebaseFirestore.instance
+          .collection('ConfirmedCase')
+          // .where(
+          //     "find", isEqualTo: true)
+          .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) {
           return Container(child: Center(child: Text("Loading...")));
         }
         int length = snapshot.data!.docs.length;
 
-        return length > 0 ? ListView.builder(
-          shrinkWrap: true,
-          physics: ClampingScrollPhysics(),
-          itemCount: length,
-          padding: const EdgeInsets.all(2.0),
-          itemBuilder: (_, index) {
-            var item = snapshot.data!.docs[index];
-            var item1= Item.fromJson(snapshot.data!.docs[index].data() as Map<String,dynamic>);
-            String Id = snapshot.data!.docs[index].id;
-            return Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    side: BorderSide(color: MyColors.primaryColor)),
-                elevation: 10.0,
-                color: Colors.white,
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-
-                          child: Image.network(
-                            (item.get('image') as List<dynamic>).first
-                                .toString(), height: MediaQuery
-                              .of(context)
-                              .size
-                              .height * 0.1,
-                            width: MediaQuery
-                                .of(context)
-                                .size
-                                .height * 0.2,),
-
-                        ),
-                        Container(
-                          padding: EdgeInsets.all(10.0),
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width / 2.5,
-                          child: Text(
-
-                            item.get('name').toString(),
-                            style: TextStyle(
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black87),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(vertical: 8.0),
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width * 0.8,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        " Location:  ",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 15.0,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Container(
-                                        width: 100,
-                                        child: Text(
-
-
-                                          item.get('location').toString(),
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign. justify,
-                                          maxLines: 2,
-                                          style: TextStyle(
-
-                                              color: Colors.grey.shade600,
-                                              fontSize: 15.0,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "   Age:  ",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 15.0,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        item.get('age').toString(),
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            color: Colors.grey.shade600,
-                                            fontSize: 15.0,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+        return length > 0
+            ? ListView.builder(
+                shrinkWrap: true,
+                physics: ClampingScrollPhysics(),
+                itemCount: length,
+                padding: const EdgeInsets.all(2.0),
+                itemBuilder: (_, index) {
+                  var item = snapshot.data!.docs[index];
+                  var item1 = Item.fromJson(snapshot.data!.docs[index].data()
+                      as Map<String, dynamic>);
+                  String Id = snapshot.data!.docs[index].id;
+                  return Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          side: BorderSide(color: MyColors.primaryColor)),
+                      elevation: 10.0,
+                      color: Colors.white,
+                      child: Column(
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.network(
+                                  (item.get('image') as List<dynamic>)
+                                      .first
+                                      .toString(),
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.1,
+                                  width:
+                                      MediaQuery.of(context).size.height * 0.2,
+                                ),
                               ),
-                              ElevatedButton(onPressed: (){
-                                Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) => viewItem(item1,true,Id)),);
-                              }, child: Text("View Child",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),))
+                              Container(
+                                padding: EdgeInsets.all(10.0),
+                                width: MediaQuery.of(context).size.width / 2.5,
+                                child: Text(
+                                  item.get('name').toString(),
+                                  style: TextStyle(
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87),
+                                ),
+                              ),
                             ],
                           ),
-                        ),
-                      ],
+                          Row(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(vertical: 8.0),
+                                width: MediaQuery.of(context).size.width * 0.8,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              " Location:  ",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 15.0,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Container(
+                                              width: 100,
+                                              child: Text(
+                                                item.get('location').toString(),
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.justify,
+                                                maxLines: 2,
+                                                style: TextStyle(
+                                                    color: Colors.grey.shade600,
+                                                    fontSize: 15.0,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "   Age:  ",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 15.0,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Text(
+                                              item.get('age').toString(),
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  color: Colors.grey.shade600,
+                                                  fontSize: 15.0,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    viewItem(item1, true, Id)),
+                                          );
+                                        },
+                                        child: Text(
+                                          "View Child",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
+                                        ))
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ));
+                },
+              )
+            : Container(
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Text(
+                      "Thank you for using our service. \n\nNo new reported incidents of missing kids currently.We will update here in case of reported cases otherwise check next screen and help others who have lost",
+                      textAlign: TextAlign.justify,
+                      style:
+                          TextStyle(color: MyColors.primaryColor, fontSize: 22),
                     ),
-                  ],
-                ));
-          },
-        ) :
-        Container(
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Text("Thank you for using our service. No new reported incidents of missing items currently, we will update here in case of reported cases otherwise check next screen and help others who have lost",
-                style: TextStyle(color: MyColors.primaryColor,fontSize: 25),),
-            ),
-          ),
-        );
+                  ),
+                ),
+              );
       },
     );
   }
-  }
+}

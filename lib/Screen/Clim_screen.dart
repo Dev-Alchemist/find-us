@@ -2,34 +2,93 @@ import 'dart:io';
 
 import 'package:findus/Model/authentication_service.dart';
 import 'package:findus/Screen/Desktop.dart';
-import 'package:findus/Screen/FindItemList.dart';
+// import 'package:findus/Screen/FindItemList.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-class clim_screen extends StatefulWidget {
+import 'package:location/location.dart';
+
+class Clim_Screen extends StatefulWidget {
+  double longitude = 0.0, latitude = 0.0;
   String id;
-  clim_screen({required this.id});
+  Clim_Screen(
+      {required this.id, required this.latitude, required this.longitude});
 
   @override
-  _clim_screenState createState() => _clim_screenState();
+  _Clim_ScreenState createState() => _Clim_ScreenState();
 }
 
-class _clim_screenState extends State<clim_screen> {
+class _Clim_ScreenState extends State<Clim_Screen> {
   File? _image;
   FirebaseStorage _storage = FirebaseStorage.instance;
 
-
-
   TextEditingController locationController = TextEditingController();
 
-  _imgFromCamera() async {
-    File image ;
-    var abc= await ImagePicker.platform.pickImage(
-        source: ImageSource.camera, imageQuality: 50
-    );
-    image = File(abc!.path);
+//  Location _locationService = Location();
+//   bool _permission = false;
+//   @override
+//   void initState() {
+//     super.initState();
+//     initLocationService();
+//   }
+//   LocationData? locationData;
 
+//   double longitude = 0.0, latitude = 0.0;
+
+//   void initLocationService() async {
+//     await _locationService.changeSettings(
+//       accuracy: LocationAccuracy.high,
+//       interval: 1000,
+//     );
+
+//     LocationData location;
+//     bool serviceEnabled;
+//     bool serviceRequestResult;
+
+//     try {
+//       print("Here");
+//       serviceEnabled = await _locationService.serviceEnabled();
+
+//       if (serviceEnabled) {
+//         var permission = await _locationService.requestPermission();
+//         _permission = permission == PermissionStatus.granted;
+
+//         if (_permission) {
+//           location = await _locationService.getLocation();
+//           print(latitude);
+//           locationData= location;
+
+//           latitude = location.latitude!;
+//           longitude = location.longitude!;
+//           print(latitude);
+//           setState(() {});
+//         }
+//       } else {
+//         serviceRequestResult = await _locationService.requestService();
+//         if (serviceRequestResult) {
+//           initLocationService();
+//           return;
+//         }
+//       }
+//     } on PlatformException catch (e) {
+//       print(e.message);
+//       if (e.code == 'PERMISSION_DENIED') {
+//         // _serviceError = e.message!;
+//         print(e.message);
+//       } else if (e.code == 'SERVICE_STATUS_ERROR') {
+//         // _serviceError = e.message!;
+//         print(e.message);
+//       } //location =un
+//     }
+//   }
+
+  _imgFromCamera() async {
+    File image;
+    var abc = await ImagePicker.platform
+        .pickImage(source: ImageSource.camera, imageQuality: 50);
+    image = File(abc!.path);
 
     setState(() {
       _image = image;
@@ -37,23 +96,21 @@ class _clim_screenState extends State<clim_screen> {
   }
 
   _imgFromGallery() async {
-    File image ;
-    var abc= await ImagePicker.platform.pickImage(
-        source: ImageSource.gallery, imageQuality: 50
-    );
+    File image;
+    var abc = await ImagePicker.platform
+        .pickImage(source: ImageSource.gallery, imageQuality: 50);
     image = File(abc!.path);
-
 
     setState(() {
       _image = image;
     });
   }
-  Future<String> uploadFile( ) async {
+
+  Future<String> uploadFile() async {
     try {
       DateTime date = DateTime.now();
-      Reference storageReference = FirebaseStorage.instance
-          .ref()
-          .child('client/${date.toString()}.jpg');
+      Reference storageReference =
+          FirebaseStorage.instance.ref().child('client/${date.toString()}.jpg');
       // String returnURL = "error";
       print("Here");
       UploadTask uploadTask = storageReference.putFile(_image!);
@@ -73,7 +130,6 @@ class _clim_screenState extends State<clim_screen> {
         context: context,
         builder: (BuildContext bc) {
           return SafeArea(
-
             child: Container(
               child: new Wrap(
                 children: <Widget>[
@@ -96,14 +152,14 @@ class _clim_screenState extends State<clim_screen> {
               ),
             ),
           );
-        }
-    );
+        });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sighted Location'),
+        title: Text('Describe Sighting'),
       ),
       body: Column(
         children: <Widget>[
@@ -119,27 +175,26 @@ class _clim_screenState extends State<clim_screen> {
                 radius: 55,
                 child: _image != null
                     ? ClipRRect(
-                  borderRadius: BorderRadius.circular(50),
-                  child: Image.file(
-                    _image!,
-                    width: 200,
-                    height: 200,
-                    fit: BoxFit.fitHeight,
-                  ),
-                )
+                        borderRadius: BorderRadius.circular(50),
+                        child: Image.file(
+                          _image!,
+                          width: 200,
+                          height: 200,
+                          fit: BoxFit.fitHeight,
+                        ),
+                      )
                     : Container(
-                  decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(50)),
-                  width: 100,
-                  height: 100,
-                  child: Icon(
-                    Icons.camera_alt,
-                    color: Colors.grey[800],
-                  ),
-                ),
+                        decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(50)),
+                        width: 100,
+                        height: 100,
+                        child: Icon(
+                          Icons.camera_alt,
+                          color: Colors.grey[800],
+                        ),
+                      ),
               ),
-
             ),
           ),
           Container(
@@ -148,7 +203,7 @@ class _clim_screenState extends State<clim_screen> {
               controller: locationController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: 'Please Enter Sighted Location',
+                labelText: 'Please Provide More Details',
               ),
             ),
           ),
@@ -156,30 +211,32 @@ class _clim_screenState extends State<clim_screen> {
               height: 50,
               padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: ElevatedButton(
-
                 child: Text('Upload Sighted Location'),
                 onPressed: () async {
                   showAler(context);
 
                   if (locationController.text.isEmpty) {
                     AuthenticationService(FirebaseAuth.instance)
-                        .showAlertDialog(context, "Please Enter Sighted Location");
+                        .showAlertDialog(
+                            context, "Please Enter Sighted Location");
                   } else {
-
-                    String image_url = await uploadFile() ;
-                    if(image_url == "error"){
+                    String image_url = await uploadFile();
+                    if (image_url == "error") {
                       Navigator.pop(context);
-
-                    }else{
-                    String re = await AuthenticationService(FirebaseAuth.instance).Updatedloaction(widget.id,locationController.text,image_url);
-                   print(re);
-                    Navigator.pop(context);
-                    showAlertDialog(context,"Data Upload Successful ");
-
+                    } else {
+                      
+                      String re =
+                          await AuthenticationService(FirebaseAuth.instance)
+                              .Updatedloaction(
+                                  widget.id,
+                                  locationController.text,
+                                  image_url,
+                                  widget.latitude,
+                                  widget.longitude);
+                      print(re);
+                      Navigator.pop(context);
+                      showAlertDialog(context, "Data Upload Successful ");
                     }
-
-
-
                   }
                 },
               )),
@@ -187,14 +244,20 @@ class _clim_screenState extends State<clim_screen> {
       ),
     );
   }
+
   showAlertDialog(BuildContext context, String mess) {
     // set up the button
-    Widget okButton = FlatButton(
+    Widget okButton = TextButton(
       child: Text("OK"),
       onPressed: () {
         Navigator.pop(context);
-        Navigator.pushReplacement( context,MaterialPageRoute(builder: (context) =>
-            Home_screen()),);
+        Navigator.pop(context);
+        Navigator.pop(context);
+        Navigator.pop(context);
+        // Navigator.pushReplacement(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => Home_screen()),
+        // );
       },
     );
 
@@ -221,16 +284,15 @@ class _clim_screenState extends State<clim_screen> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Please Wait"),
-      content: Container(
-        child: Center(
-            child: CircularProgressIndicator(strokeWidth: 2,)),
-        width: 100,
-        height: 100,
-      )
-
-
-    );
+        title: Text("Please Wait"),
+        content: Container(
+          child: Center(
+              child: CircularProgressIndicator(
+            strokeWidth: 2,
+          )),
+          width: 100,
+          height: 100,
+        ));
 
     // show the dialog
     showDialog(

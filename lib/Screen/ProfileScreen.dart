@@ -15,7 +15,7 @@ class _Profile_screenState extends State<Profile_screen> {
   Map<String, dynamic>? data;
 
   getuserdate() async {
-    final User user = await auth.currentUser!;
+    final User user =   auth.currentUser!;
     final uid = user.uid;
     var docSnapshot = await collection.doc(uid).get();
    data = docSnapshot.data();
@@ -106,6 +106,7 @@ class _Profile_screenState extends State<Profile_screen> {
                 Container(
                   padding: EdgeInsets.all(10),
                   child: TextField(
+                    readOnly: true,
                     controller: emialController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -134,21 +135,31 @@ class _Profile_screenState extends State<Profile_screen> {
                 Container(
                     height: 50,
                     padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    child: ElevatedButton(
-
-                      child: Text('Updated',style: TextStyle(color: Colors.white),),
+                    child: ElevatedButton.icon(
+                      label: Text('Update',
+                        style: TextStyle(color: Colors.white
+                        ),
+                        ),
+                      icon: Icon(
+                          Icons.edit_rounded,
+                          color: Colors.pink,
+                          size: 24.0,),
                       onPressed: () {
-                        AuthenticationService(FirebaseAuth.instance).updateuser(emialController.text,nameController.text,phoneController.text);
+                        AuthenticationService(FirebaseAuth.instance).updateuser(nameController.text,phoneController.text);
 
                       },
-                    )),
+                    )
+                ),
                 SizedBox(height: 20,),
                 Container(
                     height: 50,
                     padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    child: ElevatedButton(
-
-                      child: Text('LogOut',style: TextStyle(color: Colors.white),),
+                    child: ElevatedButton.icon(
+                      icon: Icon(
+                        Icons.logout_rounded,
+                        color: Colors.red,
+                        size: 24.0,),
+                      label: Text('LogOut',style: TextStyle(color: Colors.white),),
                       onPressed: () {
                         AuthenticationService(FirebaseAuth.instance).signOut(context);
 

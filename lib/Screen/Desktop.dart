@@ -17,6 +17,8 @@ class _Home_screenState extends State<Home_screen> {
   int _currentIndex = 0;
   final pageList = [Lostitem(),FinditemList(),Profile_screen()];
 
+
+
   @override
   Widget build(BuildContext context) {
       return  Scaffold(
@@ -32,8 +34,8 @@ class _Home_screenState extends State<Home_screen> {
         onItemSelected: (index) => setState(() => _currentIndex = index),
         items: <BottomNavyBarItem>[
           BottomNavyBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Recent'),
+            icon: Icon(Icons.group, color: Colors.redAccent),
+            title: Text('Cases'),
             activeColor: MyColors.primaryColor,
             textAlign: TextAlign.center,
           ),
@@ -44,16 +46,16 @@ class _Home_screenState extends State<Home_screen> {
           //   textAlign: TextAlign.center,
           // ),
           BottomNavyBarItem(
-            icon: Icon(Icons.find_in_page),
+            icon: Icon(Icons.folder_shared_rounded, color: Colors.green),
             title: Text(
-              'Cases',
+              'Found',
             ),
             activeColor: MyColors.primaryColor,
             textAlign: TextAlign.center,
           ),
           BottomNavyBarItem(
 
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.settings, color: Colors.black),
             title: Text('Profile'),
             activeColor: MyColors.primaryColor,
             textAlign: TextAlign.center,

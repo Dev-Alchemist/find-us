@@ -1,11 +1,10 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:findus/Screen/Desktop.dart';
 import 'package:findus/Screen/Login.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:location_platform_interface/location_platform_interface.dart';
 
 import 'dart:convert';
 import 'dart:async';
@@ -13,14 +12,13 @@ import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationService {
-
   final FirebaseAuth _firebaseAuth;
   final DBRef = FirebaseFirestore.instance.collection('FindUsUsers');
-  final DBRe = FirebaseFirestore.instance.collection('climelocation');
+  final DBRe = FirebaseFirestore.instance.collection('Sighted');
   AuthenticationService(this._firebaseAuth);
 
   /// Changed to idTokenChanges as it updates depending on more cases.
- // Stream<User?> get authStateChanges => _firebaseAuth.idTokenChanges();
+  // Stream<User?> get authStateChanges => _firebaseAuth.idTokenChanges();
 
   /// This won't pop routes so you could do something like
   /// Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
@@ -31,8 +29,10 @@ class AuthenticationService {
     pref.setString("password", "");
     pref.setString("email", "");
 
-    Navigator.pushReplacement(context,
-      MaterialPageRoute(builder: (context) => Login_scrren()),);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Login_scrren()),
+    );
   }
 
   Future<FirebaseAuth> getCurrentAuth() async {
@@ -43,7 +43,7 @@ class AuthenticationService {
     print("password reset");
     try {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
-      showAlertDialog(ctx, "email is sent for reset Password");
+      showAlertDialog(ctx, "Email sent for reset password");
 
       return "Signed in";
     } on FirebaseException catch (e) {
@@ -62,21 +62,34 @@ class AuthenticationService {
       required String password,
       BuildContext? ctx}) async {
     try {
-      UserCredential userCredential =
-      await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: password);
+      UserCredential userCredential = await _firebaseAuth
+          .signInWithEmailAndPassword(email: email, password: password);
 
-       if (userCredential.user!.uid.isNotEmpty){
-         saveData(email: email, password: password);
+      if (userCredential.user!.uid.isNotEmpty) {
+        DocumentSnapshot<Map<String, dynamic>> doc = await FirebaseFirestore
+            .instance
+            .collection("FindUsUsers")
+            .doc(userCredential.user!.uid)
+            .get();
 
-         Navigator.pushReplacement(ctx!,
-           MaterialPageRoute(
-               builder: (context) => Home_screen()),);
-       }
+        if (doc.id.isNotEmpty) {
+          if (doc['allow'] == true) {
+            saveData(email: email, password: password);
+
+            Navigator.pushReplacement(
+              ctx!,
+              MaterialPageRoute(builder: (context) => Home_screen()),
+            );
+          }else{
+      showAlertDialog(ctx!, "Your account has been temporarily locked");
+
+          }
+        }
+      }
 
       return "Signed in";
     } on FirebaseException catch (e) {
-      showAlertDialog(ctx!, "Email and Password inVaild");
+      showAlertDialog(ctx!, "Incorrect email or password. Please try again");
       print(e.message);
       return e.message;
     }
@@ -87,7 +100,6 @@ class AuthenticationService {
     pref.setString("password", password!);
     pref.setString("email", email!);
   }
-  
 
   /// There are a lot of different ways on how you can do exception handling.
   /// This is to make it as easy as possible but a better way would be to
@@ -97,30 +109,29 @@ class AuthenticationService {
       {required String email,
       required String password,
       required String name,
-        required bool allow,
-        required String phone,
-        BuildContext? ctx}) async {
+      required bool allow,
+      required String phone,
+      BuildContext? ctx}) async {
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
 
-      DBRef.doc(FirebaseAuth.instance.currentUser!.uid) .set({
-
-
-        'email' : email,
-        'name' :name,
+      DBRef.doc(FirebaseAuth.instance.currentUser!.uid).set({
+        'email': email,
+        'name': name,
         'password': password,
-        'phone' : phone,
-        'allow' : allow
+        'phone': phone,
+        'allow': allow
       });
-      //creae the user in the database
+      //create the user in the database
       saveData(email: email, password: password);
 
-      Navigator.pushReplacement(ctx!,
-        MaterialPageRoute(
-            builder: (context) => Home_screen()),);
-      
-       //sendMailVerification(_firebaseAuth);
+      Navigator.pushReplacement(
+        ctx!,
+        MaterialPageRoute(builder: (context) => Home_screen()),
+      );
+
+      //sendMailVerification(_firebaseAuth);
 
       return "Signed up";
     } on FirebaseException catch (e) {
@@ -132,7 +143,7 @@ class AuthenticationService {
 
   showAlertDialog(BuildContext context, String mess) {
     // set up the button
-    Widget okButton = FlatButton(
+    Widget okButton = TextButton(
       child: Text("OK"),
       onPressed: () {
         Navigator.pop(context);
@@ -156,15 +167,11 @@ class AuthenticationService {
       },
     );
   }
-  updateuser(String email,String name,String Phone){
+
+  updateuser(String name, String Phone) {
     DBRef.doc(FirebaseAuth.instance.currentUser!.uid).update({
-
-
-      'email' : email,
-      'name' :name,
-      'phone' : Phone,
-
-
+      'name': name,
+      'phone': Phone,
     });
   }
 
@@ -173,19 +180,32 @@ class AuthenticationService {
       currentAuth.currentUser!.sendEmailVerification();
       showAlertDialog(ctx!, "Please check your Email");
     } catch (e) {
-      print("An error occured while trying to send email verification");
+      print("An error occurred while trying to send email verification");
       // print(e.message);
     }
   }
-  Updatedloaction(String id,String Location,String Image) async
-  {
-    var result =  await DBRe.add({
-      'id' : id,
-      'loaction': Location,
-      'image' : Image,
+
+  Updatedloaction(String id, String Location, String Image, double latitude,
+      double longitude) async {
+//  Map<String, dynamic> data = {
+//                     "find": true,
+//                     "latitude": latitude,
+//                     "longitude": longitude,
+//                   };
+//                   FirebaseFirestore.instance
+//                       .collection("Cases")
+//                       .doc(id)
+//                       .update(data)
+//                       .then((value) {
+//                   }).catchError((onError) {});
+
+    var result = await DBRe.add({
+      'id': id,
+      'location': Location,
+      "latitude": latitude,
+      "longitude": longitude,
+      'image': Image,
     });
     return result.id;
-
-
   }
 }

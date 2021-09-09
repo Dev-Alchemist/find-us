@@ -1,15 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:findus/Model/Model.dart';
 import 'package:findus/Screen/MapView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart';
-import 'package:latlong2/latlong.dart';
 
 import '../Theme.dart';
-import 'Clim_screen.dart';
 
 class viewItem extends StatefulWidget {
   Item item1;
@@ -27,99 +23,8 @@ class _viewItemState extends State<viewItem> {
   late String valueText;
   TextEditingController _textFieldController = TextEditingController();
 
-  Location _locationService = Location();
-  bool _permission = false;
-  @override
-  void initState() {
-    super.initState();
-    initLocationService();
-    // getLoC();
-  }
-
-  double longitude = 0.0, latitude = 0.0;
-
-  void initLocationService() async {
-    await _locationService.changeSettings(
-      accuracy: LocationAccuracy.high,
-      interval: 1000,
-    );
-
-    LocationData location;
-    bool serviceEnabled;
-    bool serviceRequestResult;
-
-    try {
-      print("Here");
-      serviceEnabled = await _locationService.serviceEnabled();
-
-      if (serviceEnabled) {
-        var permission = await _locationService.requestPermission();
-        _permission = permission == PermissionStatus.granted;
-
-        if (_permission) {
-          location = await _locationService.getLocation();
-          print(latitude);
-
-          latitude = location.latitude!;
-          longitude = location.longitude!;
-          print(latitude);
-          setState(() {});
-        }
-      } else {
-        serviceRequestResult = await _locationService.requestService();
-        if (serviceRequestResult) {
-          initLocationService();
-          return;
-        }
-      }
-    } on PlatformException catch (e) {
-      print(e.message);
-      if (e.code == 'PERMISSION_DENIED') {
-        // _serviceError = e.message!;
-        print(e.message);
-      } else if (e.code == 'SERVICE_STATUS_ERROR') {
-        // _serviceError = e.message!;
-        print(e.message);
-      } //location =un
-    }
-  }
-
-  // getLoC() {
-  //   getLocation().then((value) {
-  //     if (value == null) {
-  //       getLoC();
-  //     } else {
-  //       latitude = value.latitude;
-  //       longitude = value.longitude;
-  //       print(latitude);
-  //       print(longitude);
-
-  //       // setState(() {});
-  //     }
-  //   });
-  // }
-
-  // Future<Position> getLocation() async {
-  //   try {
-  //     LocationPermission permission;
-  //     permission = await Geolocator.checkPermission();
-
-  //     if (permission == LocationPermission.denied) {
-  //       permission = await Geolocator.requestPermission();
-
-  //       if (permission == LocationPermission.denied) {
-  //         return null;
-  //       }
-  //     } else {
-  //       Position position = await GeolocatorPlatform.instance
-  //           .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-  //       return position;
-  //     }
-  //   } catch (ex) {
-  //     return null;
-  //   }
-  // }
-
+ 
+  
   Future<void> _displayTextInputDialog(BuildContext context) async {
     return showDialog(
         context: context,
@@ -159,8 +64,8 @@ class _viewItemState extends State<viewItem> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => MapView(
-                                longitude: 20.00,
-                                latitude: 34.44,
+                                // longitude: 20.00,
+                                // latitude: 34.44,
                                 id: widget.id,
                               )),
                     );
@@ -237,23 +142,7 @@ class _viewItemState extends State<viewItem> {
                                         image: NetworkImage(path.toString()),
                                         fit: BoxFit.fitHeight)),
                               ),
-                              // Center(
-                              //   child: TextButton(
-                              //       onPressed: () {
-                              //         // showImageDialoge(context,
-                              //         // path.toString());
-                              //       },
-                              //       child: Text(
-                              //         "View",
-                              //         style: TextStyle(
-                              //           fontSize: 24.0,
-                              //           fontWeight: FontWeight.bold,
-                              //           backgroundColor: Colors.black45,
-                              //           color: Colors.white,
-                              //         ),
-                              //       )),
-                              // ),
-                            ],
+                          ],
                           ),
                         ),
                       ),
@@ -306,7 +195,7 @@ class _viewItemState extends State<viewItem> {
                         ),
                         RichText(
                           text: TextSpan(
-                              text: "Gender : ",
+                              text: " Gender : ",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -406,38 +295,55 @@ class _viewItemState extends State<viewItem> {
                     ),
                   ),
                 ),
+               
+               
+               
                 widget.view
-                    ? Container(
-                 child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: ButtonBar(
-                    alignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            primary: Colors.white,
-                            // backgroundColor: Colors.teal,
-                            side: BorderSide(
-                                color: MyColors.primaryColor, width: 1),
-                          ),
-                          onPressed: () {
-                            // _displayTextInputDialog(context);
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => clim_screen(
-                                  id: widget.id,
-                                )));
-
-                          },
-                          child: Text(
-                            'Sighted Location',
-                            style: TextStyle(
-                                color: MyColors.primaryColor,
-                                fontSize: 17),
-                          )),
-                    ],
-                  ),
-                ),)
-                    : Align(
+                    ? 
+                    Container()
+                    
+                //     Container(
+                //  child: Align(
+                //   alignment: Alignment.bottomCenter,
+                //   child: ButtonBar(
+                //     alignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       OutlinedButton(
+                //           style: OutlinedButton.styleFrom(
+                //             primary: Colors.white,
+                //             // backgroundColor: Colors.teal,
+                //             side: BorderSide(
+                //                 color: MyColors.primaryColor, width: 1),
+                //           ),
+                //           onPressed: () {
+                //             // _displayTextInputDialog(context);
+                //             // Navigator.of(context).push(MaterialPageRoute(
+                //             //     builder: (_) => Clim_Screen(
+                //             //       id: widget.id,
+                //             //     )));
+                //               Navigator.of(context).push(MaterialPageRoute(
+                //                       builder: (_) => MapView(
+                //                             latitude: widget.item1.latitude!,
+                //                             longitude:  widget.item1.longitude!,
+                //                             id: widget.id,
+                //                             check: false,
+                //                           )));
+                //           },
+                //           child: Text(
+                //             'Sighted Location',
+                //             style: TextStyle(
+                //                 color: MyColors.primaryColor,
+                //                 fontSize: 17),
+                //           )),
+                //     ],
+                //   ),
+                // ),)
+                   
+                   
+                   
+                    :
+                    
+                     Align(
                         alignment: Alignment.bottomCenter,
                         child: ButtonBar(
                           alignment: MainAxisAlignment.spaceBetween,
@@ -451,19 +357,21 @@ class _viewItemState extends State<viewItem> {
                                 ),
                                 onPressed: () {
                                   // _displayTextInputDialog(context);
+                                  // print(location!.latitude);
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (_) => MapView(
-                                            latitude: latitude,
-                                            longitude: longitude,
+                                            // latitude: widget.item1.latitude!,
+                                            // longitude:  widget.item1.longitude!,
+                                            check: true,
                                             id: widget.id,
                                           )));
-                                  if (latitude != 0.0) {
-                                  } else {
-                                    print("Nullllllll");
-                                  }
+                                  // if (latitude != 0.0) {
+                                  // } else {
+                                  //   print("Null");
+                                  // }
                                 },
                                 child: Text(
-                                  'View Map',
+                                  'Have Seen This Child',
                                   style: TextStyle(
                                       color: MyColors.primaryColor,
                                       fontSize: 17),
