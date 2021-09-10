@@ -8,8 +8,8 @@ import 'package:latlong2/latlong.dart';
 
 class MapView extends StatefulWidget {
   // double longitude, latitude;
-  String id;
-  bool? check;
+  final String id;
+  final bool? check;
   MapView(
       {
       //required this.latitude,

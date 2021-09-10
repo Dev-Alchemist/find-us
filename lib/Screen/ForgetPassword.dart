@@ -3,10 +3,9 @@ import 'package:findus/Screen/Login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../Theme.dart';
 class foregetpassword extends StatelessWidget {
 
-  TextEditingController emailController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

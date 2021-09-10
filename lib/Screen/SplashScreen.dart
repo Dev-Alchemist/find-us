@@ -28,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
   getUser() async {
     // String a = await checkUser();
-    bool check = await getData();
+    bool? check = await getData();
     if (check != null) {
       check = check;
     } else {

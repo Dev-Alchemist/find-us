@@ -1,18 +1,14 @@
 import 'dart:io';
 
 import 'package:findus/Model/authentication_service.dart';
-import 'package:findus/Screen/Desktop.dart';
-// import 'package:findus/Screen/FindItemList.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:location/location.dart';
 
 class Clim_Screen extends StatefulWidget {
-  double longitude = 0.0, latitude = 0.0;
-  String id;
+  final double longitude, latitude;
+  final String id;
   Clim_Screen(
       {required this.id, required this.latitude, required this.longitude});
 
@@ -26,63 +22,6 @@ class _Clim_ScreenState extends State<Clim_Screen> {
 
   TextEditingController locationController = TextEditingController();
 
-//  Location _locationService = Location();
-//   bool _permission = false;
-//   @override
-//   void initState() {
-//     super.initState();
-//     initLocationService();
-//   }
-//   LocationData? locationData;
-
-//   double longitude = 0.0, latitude = 0.0;
-
-//   void initLocationService() async {
-//     await _locationService.changeSettings(
-//       accuracy: LocationAccuracy.high,
-//       interval: 1000,
-//     );
-
-//     LocationData location;
-//     bool serviceEnabled;
-//     bool serviceRequestResult;
-
-//     try {
-//       print("Here");
-//       serviceEnabled = await _locationService.serviceEnabled();
-
-//       if (serviceEnabled) {
-//         var permission = await _locationService.requestPermission();
-//         _permission = permission == PermissionStatus.granted;
-
-//         if (_permission) {
-//           location = await _locationService.getLocation();
-//           print(latitude);
-//           locationData= location;
-
-//           latitude = location.latitude!;
-//           longitude = location.longitude!;
-//           print(latitude);
-//           setState(() {});
-//         }
-//       } else {
-//         serviceRequestResult = await _locationService.requestService();
-//         if (serviceRequestResult) {
-//           initLocationService();
-//           return;
-//         }
-//       }
-//     } on PlatformException catch (e) {
-//       print(e.message);
-//       if (e.code == 'PERMISSION_DENIED') {
-//         // _serviceError = e.message!;
-//         print(e.message);
-//       } else if (e.code == 'SERVICE_STATUS_ERROR') {
-//         // _serviceError = e.message!;
-//         print(e.message);
-//       } //location =un
-//     }
-//   }
 
   _imgFromCamera() async {
     File image;

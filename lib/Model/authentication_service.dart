@@ -4,9 +4,7 @@ import 'package:findus/Screen/Login.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:location_platform_interface/location_platform_interface.dart';
 
-import 'dart:convert';
 import 'dart:async';
 
 import 'package:shared_preferences/shared_preferences.dart';

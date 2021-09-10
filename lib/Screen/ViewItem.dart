@@ -2,15 +2,13 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:findus/Model/Model.dart';
 import 'package:findus/Screen/MapView.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:location/location.dart';
 
 import '../Theme.dart';
 
 class viewItem extends StatefulWidget {
-  Item item1;
-  bool view;
-  String id;
+  final Item item1;
+  final bool view;
+  final String id;
   viewItem(this.item1, this.view, this.id, {Key? key}) : super(key: key);
 
   @override
@@ -69,19 +67,6 @@ class _viewItemState extends State<viewItem> {
                                 id: widget.id,
                               )),
                     );
-
-                    // Map<String, dynamic> data = {
-                    //   "find": true,
-                    //   "finditemlocation" : valueText
-                    // };
-                    // FirebaseFirestore.instance
-                    //     .collection("Items")
-                    //     .doc(widget.id)
-                    //     .update(data).then((value) {
-                    //       Navigator.pop(context);
-                    // })
-                    //     .catchError((onError) {});
-                    // Navigator.pop(context);
                   });
                 },
               ),

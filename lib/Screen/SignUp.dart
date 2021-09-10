@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../Theme.dart';
-import 'Desktop.dart';
+
 class Singup_screen extends StatefulWidget {
   const Singup_screen({Key? key}) : super(key: key);
 
@@ -15,8 +15,8 @@ class Singup_screen extends StatefulWidget {
 
 class _Singup_screenState extends State<Singup_screen> {
 
-  TextEditingController nameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController emialController = TextEditingController();
   @override

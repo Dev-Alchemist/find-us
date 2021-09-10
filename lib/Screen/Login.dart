@@ -8,8 +8,8 @@ import 'ForgetPassword.dart';
 import 'SignUp.dart';
 class Login_scrren extends StatelessWidget {
 
-  TextEditingController nameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

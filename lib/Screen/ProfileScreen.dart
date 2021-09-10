@@ -156,7 +156,7 @@ class _Profile_screenState extends State<Profile_screen> {
                     padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: ElevatedButton.icon(
                       icon: Icon(
-                        Icons.logout_rounded,
+                        Icons.logout,
                         color: Colors.red,
                         size: 24.0,),
                       label: Text('LogOut',style: TextStyle(color: Colors.white),),
