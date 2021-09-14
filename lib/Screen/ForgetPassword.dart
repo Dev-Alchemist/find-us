@@ -42,7 +42,10 @@ class foregetpassword extends StatelessWidget {
                     controller: emailController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'Enter Email to Forget Password ',
+                      prefixIcon: Icon(
+                          Icons.email_outlined
+                      ),
+                      hintText: 'Enter Email to Forget Password ',
                     ),
                   ),
                 ),

@@ -16,9 +16,36 @@ class Singup_screen extends StatefulWidget {
 class _Singup_screenState extends State<Singup_screen> {
 
   final TextEditingController nameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  @required TextEditingController phoneController = TextEditingController();
   TextEditingController emialController = TextEditingController();
+
+
+  String? validateMobile(String value) {
+    String patttern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+    RegExp regExp = new RegExp(patttern);
+    if (value.length == 0) {
+      return 'Please enter mobile number';
+    }
+    else if (!regExp.hasMatch(value)) {
+      return 'Please enter valid mobile number';
+    }
+    return null;
+  }
+
+
+
+
+  // Initially password is obscure
+  bool _obscureText = true;
+
+  // Toggles the password show status
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,45 +71,69 @@ class _Singup_screenState extends State<Singup_screen> {
                     )),
                 Container(
                   padding: EdgeInsets.all(10),
-                  child: TextField(
+                  child: TextFormField(
+                    validator: (val) => val!.isEmpty && val.length <2 ? 'Ensure username is more than 2 letters' : null,
                     controller: nameController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Username',
+                      prefixIcon: Icon(
+                        Icons.person,
+                        size: 30.0,
+                      ),
                     ),
                   ),
                 ),
                 Container(
                   padding: EdgeInsets.all(10),
-                  child: TextField(
+                  child: TextFormField(
                     controller: emialController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Email',
+                      prefixIcon: Icon(
+                        Icons.email_outlined
+                      ),
 
                     ),
                     keyboardType:TextInputType.emailAddress,
                   ),
                 ),
-                Container(
+                 Container(
                   padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: TextField(
-                    obscureText: true,
-                    controller: passwordController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Password',
+                  child: TextFormField(
+                      controller: _passwordController,
+                        validator: (val) => val!.length < 6 ? 'Enter a password 6+ long' : null,
+                        onSaved: (val) => _passwordController = val as TextEditingController,
+                        obscureText: _obscureText,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Password',
+                        prefixIcon: Icon(Icons.lock),
+                        suffix: InkWell(
+                          onTap: _toggle,
+                          child: Icon(_obscureText ? Icons.visibility : Icons.visibility_off),
+                        )
+                      ),
                     ),
-                  ),
+
+
                 ),
                 Container(
                   padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: TextField(
-
+                  child: TextFormField(
+                    validator: (val) {
+                      return val!.length < 9 ? 'Phone number input is not correct' : null;
+                      },
                     controller: phoneController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Phone Number',
+                      prefixIcon: Icon(
+                        Icons.phone_iphone,
+                        size: 30.0,
+                      ),
+
                     ),
                     keyboardType: TextInputType.phone,
                   ),
@@ -101,16 +152,16 @@ class _Singup_screenState extends State<Singup_screen> {
                         }else
                         if(emialController.text.isEmpty){
                           AuthenticationService(FirebaseAuth.instance).showAlertDialog(context,"Please enter a valid email address");
-                        }else if (passwordController.text.isEmpty && passwordController.text.length < 8){
+                        }else if (_passwordController.text.isEmpty){
                           AuthenticationService(FirebaseAuth.instance).showAlertDialog(context,"Please enter a valid password");
-                        }else if (phoneController.text.isEmpty && phoneController.text.length > 10){
+                        }else if (phoneController.text.isEmpty){
                           AuthenticationService(FirebaseAuth.instance).showAlertDialog(context,"Please enter valid phone number");
                         }else  {
                           AuthenticationService(FirebaseAuth.instance).signUp(
                             ctx: context,
                               allow: true,
                               email: emialController.text,
-                              password: passwordController.text,
+                              password: _passwordController.text,
                               name: nameController.text,
                               phone: phoneController.text);
 

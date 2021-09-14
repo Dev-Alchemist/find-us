@@ -84,7 +84,8 @@ class _viewItemState extends State<viewItem> {
           'Missing Child',
           style: TextStyle(
               fontSize: 25, color: Colors.white, fontWeight: FontWeight.bold),
-        )),
+        )
+        ),
       ),
       body: Column(
         children: [
@@ -125,7 +126,8 @@ class _viewItemState extends State<viewItem> {
                                 decoration: BoxDecoration(
                                     image: DecorationImage(
                                         image: NetworkImage(path.toString()),
-                                        fit: BoxFit.fitHeight)),
+                                        fit: BoxFit.fitHeight)
+                                ),
                               ),
                           ],
                           ),
@@ -154,181 +156,118 @@ class _viewItemState extends State<viewItem> {
               )
             ],
           ),
-          Expanded(
-            child: Stack(
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: Card(
-                    color: MyColors.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: Text(
-                            widget.item1.name!,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20),
-                          ),
-                        ),
-                        RichText(
-                          text: TextSpan(
-                              text: " Gender : ",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18),
-                              children: [
-                                TextSpan(
-                                    text: widget.item1.gender!,
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        // fontWeight: FontWeight.bold,
-                                        fontSize: 14))
-                              ]),
-                        ),
-                        IconButton(
-                            onPressed: () {},
-                            icon:
-                                Icon(Icons.location_pin, color: Colors.white)),
-                        Text(widget.item1.location!,
-                            style: TextStyle(
-                                color: Colors.black,
-                                // fontWeight: FontWeight.bold,
-                                fontSize: 14)),
-                      ],
-                    ),
-                  ),
-                ),
-                // widget.view
-                //     ? Container()
-                //     : Padding(
-                //         padding: const EdgeInsets.only(top: 60, bottom: 40),
-                //         child: Material(
-                //           child: Column(
-                //             children: [
-                //               Padding(
-                //                 padding: const EdgeInsets.symmetric(
-                //                     horizontal: 10, vertical: 5),
-                //                 child: Text(
-                //                   "Item Find Location",
-                //                   style: TextStyle(
-                //                       color: MyColors.primaryColor,
-                //                       fontWeight: FontWeight.bold,
-                //                       fontSize: 18),
-                //                 ),
-                //               ),
-                //               Expanded(
-                //                   child: SingleChildScrollView(
-                //                 child: Container(
-                //                   margin: const EdgeInsets.all(15.0),
-                //                   padding: const EdgeInsets.all(3.0),
-                //                   decoration: BoxDecoration(
-                //                       border: Border.all(
-                //                           color: MyColors.primaryColor)),
-                //                   child: Text(
-                //                     widget.item1.finditemlocation!,
-                //                     textAlign: TextAlign.justify,
-                //                     style: TextStyle(fontSize: 15),
-                //                   ),
-                //                 ),
-                //               ))
-                //             ],
-                //           ),
-                //         ),
-                //       ),
 
-                Padding(
-                  padding: const EdgeInsets.only(top: 60, bottom: 40),
-                  child: Material(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
-                          child: Text(
-                            "Description ",
-                            style: TextStyle(
-                                color: MyColors.primaryColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18),
-                          ),
-                        ),
-                        Expanded(
-                            child: SingleChildScrollView(
-                          child: Container(
-                            margin: const EdgeInsets.all(15.0),
-                            padding: const EdgeInsets.all(3.0),
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: MyColors.primaryColor)),
-                            child: Text(
-                              widget.item1.description!,
-                              textAlign: TextAlign.justify,
-                              style: TextStyle(fontSize: 15),
-                            ),
-                          ),
-                        ))
-                      ],
-                    ),
-                  ),
+          SizedBox(height: 50,),
+          Padding(
+            padding: const EdgeInsets.only(left: 20,right: 20),
+            child: Row(
+              children: <Widget>[
+                Text("\u{1F466}Name :",style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold
+                ),),
+                SizedBox(width: 5,),
+                Text(widget.item1.name!,style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500
+                ),)
+
+              ],
+            ),
+          ),
+          SizedBox(height: 20,),
+
+          Padding(
+            padding: const EdgeInsets.only(left: 20,right: 20),
+            child: Row(
+              children: <Widget>[
+                Text("\u{1F46A} Gender :",style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold
+                ),),
+                SizedBox(width: 5,),
+
+                Text(widget.item1.gender!,style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500
+                ),)
+
+              ],
+            ),
+          ),
+          SizedBox(height: 20,),
+          Padding(
+            padding: const EdgeInsets.only(left: 20,right: 20),
+            child: Row(
+              children: <Widget>[
+                Text("\u{1F4C5} Age :",style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold
                 ),
-               
-               
-               
+                ),
+                SizedBox(width: 5,),
+
+                Text(widget.item1.age!,style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500
+                ),
+                )
+
+              ],
+            ),
+          ),
+
+          SizedBox(height: 20,),
+          Padding(
+            padding: const EdgeInsets.only(left: 20,right: 20),
+            child: Row(
+              children: <Widget>[
+                Text("\u{1F4CD}Last Seen Location :",style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold
+                ),),
+                SizedBox(width: 5,),
+
+                Text(widget.item1.location!,
+                  softWrap: true,
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500
+                ),
+                )
+
+              ],
+            ),
+          ),
+          SizedBox(height: 20,),
+          Padding(
+            padding: const EdgeInsets.only(left: 20,right: 20),
+              child: Row(
+                children: <Widget>[
+                  Text("\u{1F4D6}More Details:",
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold
+                  ),),
+                  SizedBox(width: 5,),
+                  Flexible(
+                    child: Text(widget.item1.description!,
+                          softWrap: true,
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500
+                        ),),
+                  ),
+                ],
+              ),
+          ),
+          SizedBox(height: 20,),
+
                 widget.view
-                    ? 
-                    Container()
-                    
-                //     Container(
-                //  child: Align(
-                //   alignment: Alignment.bottomCenter,
-                //   child: ButtonBar(
-                //     alignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       OutlinedButton(
-                //           style: OutlinedButton.styleFrom(
-                //             primary: Colors.white,
-                //             // backgroundColor: Colors.teal,
-                //             side: BorderSide(
-                //                 color: MyColors.primaryColor, width: 1),
-                //           ),
-                //           onPressed: () {
-                //             // _displayTextInputDialog(context);
-                //             // Navigator.of(context).push(MaterialPageRoute(
-                //             //     builder: (_) => Clim_Screen(
-                //             //       id: widget.id,
-                //             //     )));
-                //               Navigator.of(context).push(MaterialPageRoute(
-                //                       builder: (_) => MapView(
-                //                             latitude: widget.item1.latitude!,
-                //                             longitude:  widget.item1.longitude!,
-                //                             id: widget.id,
-                //                             check: false,
-                //                           )));
-                //           },
-                //           child: Text(
-                //             'Sighted Location',
-                //             style: TextStyle(
-                //                 color: MyColors.primaryColor,
-                //                 fontSize: 17),
-                //           )),
-                //     ],
-                //   ),
-                // ),)
-                   
-                   
-                   
-                    :
-                    
-                     Align(
+                    ?
+                    Container() : Align(
                         alignment: Alignment.bottomCenter,
                         child: ButtonBar(
                           alignment: MainAxisAlignment.spaceBetween,
@@ -341,32 +280,27 @@ class _viewItemState extends State<viewItem> {
                                       color: MyColors.primaryColor, width: 1),
                                 ),
                                 onPressed: () {
-                                  // _displayTextInputDialog(context);
-                                  // print(location!.latitude);
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (_) => MapView(
                                             // latitude: widget.item1.latitude!,
                                             // longitude:  widget.item1.longitude!,
                                             check: true,
                                             id: widget.id,
-                                          )));
-                                  // if (latitude != 0.0) {
-                                  // } else {
-                                  //   print("Null");
-                                  // }
+                                          )
+                                  )
+                                  );
                                 },
                                 child: Text(
                                   'Have Seen This Child',
                                   style: TextStyle(
                                       color: MyColors.primaryColor,
                                       fontSize: 17),
-                                )),
+                                )
+                            ),
                           ],
                         ),
                       ),
-              ],
-            ),
-          ),
+
         ],
       ),
     );

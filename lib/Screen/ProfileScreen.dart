@@ -33,35 +33,34 @@ class _Profile_screenState extends State<Profile_screen> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController emialController = TextEditingController();
+
+  void _show() {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text("Updated successfully"),
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.teal,
+    ));
+  }
+
+  void _show2() {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text("Exited from application"),
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.redAccent,
+    ));
+  }
+
   @override
   void initState() {
     super.initState();
     getuserdate();
   }
 
+
   @override
   Widget build(BuildContext context) {
-
-     return Column(
+    return Column(
       children: <Widget>[
-
-        // Stack(
-        //   children: <Widget>[
-        //     Container(
-        //       alignment: Alignment.center,
-        //       padding: EdgeInsets.all(10),
-        //       child:Image.asset('assets/images/findusicon.png'),width: 200,height: 150,),
-        //
-        //     // Positioned(bottom: 1, right: 1 ,child: Container(
-        //     //   height: 40, width: 40,
-        //     //   child: Icon(Icons.add_a_photo, color: Colors.white,),
-        //     //   decoration: BoxDecoration(
-        //     //       color: Colors.deepOrange,
-        //     //       borderRadius: BorderRadius.all(Radius.circular(20))
-        //     //   ),
-        //     // ))
-        //   ],
-        // ),
         Expanded(child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
@@ -146,6 +145,9 @@ class _Profile_screenState extends State<Profile_screen> {
                           size: 24.0,),
                       onPressed: () {
                         AuthenticationService(FirebaseAuth.instance).updateuser(nameController.text,phoneController.text);
+                        _show();
+
+
 
                       },
                     )
@@ -162,6 +164,7 @@ class _Profile_screenState extends State<Profile_screen> {
                       label: Text('LogOut',style: TextStyle(color: Colors.white),),
                       onPressed: () {
                         AuthenticationService(FirebaseAuth.instance).signOut(context);
+                        _show2();
 
                       },
                     )),

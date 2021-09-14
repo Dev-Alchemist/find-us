@@ -6,10 +6,24 @@ import '../Theme.dart';
 import 'Desktop.dart';
 import 'ForgetPassword.dart';
 import 'SignUp.dart';
-class Login_scrren extends StatelessWidget {
+class Login_scrren extends StatefulWidget {
 
+  @override
+  _Login_scrrenState createState() => _Login_scrrenState();
+}
+
+class _Login_scrrenState extends State<Login_scrren> {
   final TextEditingController nameController = TextEditingController();
+
   final TextEditingController passwordController = TextEditingController();
+
+  bool _obscureText = true;
+
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,17 +37,6 @@ class Login_scrren extends StatelessWidget {
             padding: EdgeInsets.all(10),
             child: ListView(
               children: <Widget>[
-                // Container(
-                //     alignment: Alignment.center,
-                //     padding: EdgeInsets.all(10),
-                //     child: Text(
-                //       'Find Us',
-                //       style: TextStyle(
-                //           color: MyColors.primaryColorLight,
-                //           fontWeight: FontWeight.w500,
-                //
-                //           fontSize: 30),
-                //     )),
                 Container(
                   alignment: Alignment.center,
                   padding: EdgeInsets.all(10),
@@ -53,7 +56,10 @@ class Login_scrren extends StatelessWidget {
                     controller: nameController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'Enter you email',
+                      labelText: 'Enter your email',
+                      prefixIcon: Icon(
+                        Icons.email_outlined
+                      ),
                     ),
                     keyboardType: TextInputType.emailAddress,
                   ),
@@ -61,11 +67,16 @@ class Login_scrren extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                   child: TextField(
-                    obscureText: true,
+                    obscureText: _obscureText,
                     controller: passwordController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Password',
+                      prefixIcon: Icon(Icons.lock),
+                        suffix: InkWell(
+                          onTap: _toggle,
+                          child: Icon(_obscureText ? Icons.visibility : Icons.visibility_off),
+                        )
                     ),
                   ),
                 ),
@@ -77,7 +88,9 @@ class Login_scrren extends StatelessWidget {
                           builder: (context) => foregetpassword()),);
                   },
                   textColor: MyColors.primaryColorLight,
-                  child: Text('Forgot Password'),
+                  child: Text('Forgot Password',
+                  style: TextStyle(decoration: TextDecoration.underline),
+                  ),
                 ),
                 Container(
                     height: 50,
@@ -91,7 +104,7 @@ class Login_scrren extends StatelessWidget {
                         if (nameController.text.isEmpty) {
                           AuthenticationService(FirebaseAuth.instance)
                               .showAlertDialog(context, "Please Enter Email");
-                        } else if (passwordController.text.isEmpty) {
+                        } else if (passwordController.text.isEmpty ) {
                           AuthenticationService(FirebaseAuth.instance)
                               .showAlertDialog(
                               context, "Please Enter Password");
@@ -132,5 +145,5 @@ class Login_scrren extends StatelessWidget {
               ],
             )));
   }
-  }
+}
 
